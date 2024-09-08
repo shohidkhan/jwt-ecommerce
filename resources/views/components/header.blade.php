@@ -83,23 +83,18 @@
                             </form>
                         </div><div class="search_overlay"></div>
                     </li>
-                    <li class="dropdown cart_dropdown"><a class="nav-link cart_trigger" href="#" data-bs-toggle="dropdown"><i class="linearicons-cart"></i><span class="cart_count">2</span></a>
+                    <li class="dropdown cart_dropdown"><a class="nav-link cart_trigger" href="#" data-bs-toggle="dropdown"><i class="linearicons-cart"></i><span class="cart_count" id="cart_count">2</span></a>
                         <div class="cart_box dropdown-menu dropdown-menu-right">
-                            <ul class="cart_list">
-                                <li>
-                                    <a href="#" class="item_remove"><i class="ion-close"></i></a>
-                                    <a href="#"><img src="{{ asset('frontend') }}/assets/images/cart_thamb1.jpg" alt="cart_thumb1">Variable product 001</a>
-                                    <span class="cart_quantity"> 1 x <span class="cart_amount"> <span class="price_symbole">$</span></span>78.00</span>
-                                </li>
-                                <li>
-                                    <a href="#" class="item_remove"><i class="ion-close"></i></a>
-                                    <a href="#"><img src="{{ asset('frontend') }}/assets/images/cart_thamb2.jpg" alt="cart_thumb2">Ornare sed consequat</a>
-                                    <span class="cart_quantity"> 1 x <span class="cart_amount"> <span class="price_symbole">$</span></span>81.00</span>
-                                </li>
+                            <ul class="cart_list" id="cart_list_item">
+                                
+                                
                             </ul>
                             <div class="cart_footer">
-                                <p class="cart_total"><strong>Subtotal:</strong> <span class="cart_price"> <span class="price_symbole">$</span></span>159.00</p>
-                                <p class="cart_buttons"><a href="#" class="btn btn-fill-line rounded-0 view-cart">View Cart</a><a href="#" class="btn btn-fill-out rounded-0 checkout">Checkout</a></p>
+                                <p class="cart_total">
+                                    <strong >Subtotal:</strong> 
+                                    <span class="cart_price"> <span class="price_symbole">$</span>
+                                </span> <span id="subtotal"></span> </p>
+                                <p class="cart_buttons"><a href="{{ route('cartPage') }}" class="btn btn-fill-line rounded-0 view-cart">View Cart</a><a href="#" class="btn btn-fill-out rounded-0 checkout">Checkout</a></p>
                             </div>
                         </div>
                     </li>
@@ -112,7 +107,8 @@
 
 
 <script>
-    
+    countCart();
+    cartDropDown();
     async function category(){
         let res=await axios.get("/categories");
         
@@ -124,5 +120,53 @@
             `
             $("#category").append(EachItem)
         })	
+    }
+    async function countCart(){
+        let res=await axios.get("/cart-count");
+        $("#cart_count").text(res.data['data']);
+    }
+    async function cartDropDown(){
+        let res=await axios.get("/cartList");
+
+        $("#cart_list_item").empty();
+        res.data['data'].forEach((item,i)=>{
+            // console.log(item)
+            let EachItem= `
+            <li>
+                <span class="item_remove remove" data-id="${item['product_id']}"><i class="ion-close"></i></span>
+                <a href="#"><img src="${item['product']['image']}" alt="cart_thumb1">${item['product']['title']}</a>
+                <span class="cart_quantity"> ${item['qty']} x <span class="cart_amount"> <span class="price_symbole">$</span>${item['product']['price']}</span></span>
+            </li>
+            `
+            $("#cart_list_item").append(EachItem)
+        });
+
+        $('.remove').on('click',function(){
+            let id=$(this).data('id');
+            removeCart(id);
+        })
+        await cartSubTotal(res.data['data']);
+    }
+
+    async function cartSubTotal(data){
+        let Total=0;
+        data.forEach((item,i)=>{
+            Total=Total+parseFloat(item['price']);
+        })
+        // console.log(Total)
+        $("#subtotal").text(Total);
+    }
+
+    async function removeCart(id){
+        $(".preloader").delay(90).fadeOut(100).removeClass('loaded');
+        let res=await axios.get('/removeCartList/'+id);
+        $(".preloader").delay(90).fadeOut(100).addClass('loaded');
+        if(res.status===200){
+            await cartDropDown();
+            await countCart();
+            await carts();
+        }else{
+            alert('Something went wrong')
+        }
     }
 </script>

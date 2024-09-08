@@ -213,7 +213,7 @@ class ProductController extends Controller {
     public function removeCartList(Request $request) {
         try {
             $user_id = $request->header("id");
-            $data = ProductCart::where(["user_id" => $user_id, "id" => $request->id])->delete();
+            $data = ProductCart::where(["user_id" => $user_id, "product_id" => $request->id])->delete();
             return ResponseHelper::Out('success', $data, 200);
         } catch (Exception $e) {
             return ResponseHelper::Out('error', $e->getMessage(), 500);

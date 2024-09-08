@@ -23,14 +23,13 @@ class JWTToken {
     public static function ReadToken($token) {
         try {
             if ($token == null) {
-                return "Unauthorized";
+                return "unauthorized";
             } else {
                 $key = env('JWT_SECRET_KEY');
                 return JWT::decode($token, new Key($key, 'HS256'));
-
             }
         } catch (Exception $e) {
-            return "Unauthorized";
+            return "unauthorized";
         }
     }
 }

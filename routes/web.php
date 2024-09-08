@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\TokenAuthentication;
 use Illuminate\Support\Facades\Route;
 
@@ -23,10 +25,13 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/verify', [UserController::class, 'verifyPage'])->name('verifyPage');
 Route::get('/by-category', [CategoryController::class, 'ByCategoryPage']);
 Route::get('/by-brand', [BrandController::class, 'ByBrandPage']);
 Route::get('/policy', [PolicyController::class, 'policy'])->name('policy');
 Route::get('/product-details', [ProductController::class, 'productDetailsPage'])->name('productDetailsPage');
+Route::get("/cart-page", [CartController::class, 'cartPage'])->name('cartPage');
+Route::get("/wishlist-page", [WishlistController::class, 'wishlistPage'])->name('wishlistPage');
 
 Route::get("/uniqueBsedOnRemark", [ProductController::class, 'uniqueBsedOnRemark']);
 Route::get("/categories", [CategoryController::class, 'index'])->name('categories');
@@ -75,7 +80,7 @@ Route::get("/removeWishList/{product_id}", [ProductController::class, 'removeWis
 Route::post("/createCartList", [ProductController::class, 'createCartList'])->name('createCartList')->middleware(TokenAuthentication::class);
 Route::get("/cartList", [ProductController::class, 'cartList'])->name('cartList')->middleware(TokenAuthentication::class);
 Route::get("/removeCartList/{id}", [ProductController::class, 'removeCartList'])->name('removeCartList')->middleware(TokenAuthentication::class);
-
+Route::get("/cart-count", [CartController::class, 'cartCount'])->name('cartCount')->middleware(TokenAuthentication::class);
 //Invoices Route
 Route::get("/invoiceCreate", [InvoiceController::class, 'invoiceCreate'])->name('invoiceCreate')->middleware(TokenAuthentication::class);
 Route::get("/invoiceList", [InvoiceController::class, 'invoiceList'])->name('invoiceList')->middleware(TokenAuthentication::class);

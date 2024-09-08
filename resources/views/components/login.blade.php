@@ -23,5 +23,23 @@
 
 <script>
 
-
+async function Login(){
+    let email=document.getElementById('email').value;
+    if(email.length==0){
+        alert('Please Enter Email');
+    }else{
+        $(".preloader").delay(90).fadeIn(100).removeClass('loaded');
+        let res=await axios.get('/userLogin/'+email);
+        console.log(res)
+         if(res.status==200){
+             localStorage.setItem('email',email);
+            //  localStorage.setItem('currentUrl',window.location.pathname);
+             window.location.href="/verify";
+         }else{
+            $(".preloader").delay(90).fadeOut(100).addClass('loaded');
+            alert("Something Went Wrong");
+         }
+    }
+    
+}
 </script>
