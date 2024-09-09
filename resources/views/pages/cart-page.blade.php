@@ -2,6 +2,7 @@
 @section('title','Cart Page')
 @section('content')
 @include('components.header')
+@include('components.paymentMethodList')
 @include('components.cart')
 @include('components.footer')
 <script>

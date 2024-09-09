@@ -63,7 +63,7 @@ class InvoiceController extends Controller {
                             "invoice_id" => $invoiceId,
                             "product_id" => $cart["product_id"],
                             "user_id" => $user_id,
-                            "sale_price" => $cart["price"],
+                            "sale_price" => $cart['product']["price"],
                             "qty" => $cart["qty"],
                         ]);
                     }

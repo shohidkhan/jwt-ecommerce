@@ -124,7 +124,7 @@ class ProductController extends Controller {
 
                 return ResponseHelper::Out('success', $data, 200);
             } else {
-                return ResponseHelper::Out('error', "Customer Profile not found", 200);
+                return ResponseHelper::Out('error', "Customer Profile not found", 500);
             }
         } catch (Exception $e) {
             return ResponseHelper::Out('error', $e->getMessage(), 500);

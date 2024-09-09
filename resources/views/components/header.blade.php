@@ -27,9 +27,14 @@
                 <div class="col-md-6">
                 	<div class="text-center text-md-end">
                        	<ul class="header_list">
-                        	<li><a href="/policy?type=about"><span>About</span></a></li>
-                            <li><a href="wishlist.html"><i class="ti-heart"></i><span>Wishlist</span></a></li>
-                            <li><a href="login.html"><i class="ti-user"></i><span>Login</span></a></li>
+                            
+                            @if(Cookie::get('token')!== null)
+                            <li><a href="{{ route('logout') }}" class="btn btn-sm btn-danger">Logout</a></li>
+                            <li><a href="{{ route('profilePage') }}"><i class="ti-user"></i><span>Account</span></a></li>
+                            <li><a href="{{ route('wishlistPage') }}"><i class="ti-heart"></i><span>Wishlist</span></a></li>
+                            @else 
+                            <li><a href="{{ route('userLoginPage') }}"><i class="ti-user"></i><span>Login</span></a></li>
+                            @endif
 						</ul>
                     </div>
                 </div>
@@ -69,6 +74,10 @@
                                 </ul>
                             </div>
                         </li>
+
+                        <li>
+                            <a class="nav-link nav_item" href="{{ route('cartPage') }}">Cart</a>
+                        </li>
                         
                         <li><a class="nav-link nav_item" href="contact.html">Contact Us</a></li> 
                     </ul>
@@ -83,7 +92,7 @@
                             </form>
                         </div><div class="search_overlay"></div>
                     </li>
-                    <li class="dropdown cart_dropdown"><a class="nav-link cart_trigger" href="#" data-bs-toggle="dropdown"><i class="linearicons-cart"></i><span class="cart_count" id="cart_count">2</span></a>
+                    <li class="dropdown cart_dropdown"><a class="nav-link cart_trigger" href="#" data-bs-toggle="dropdown"><i class="linearicons-cart"></i><span class="cart_count" id="cart_count">0</span></a>
                         <div class="cart_box dropdown-menu dropdown-menu-right">
                             <ul class="cart_list" id="cart_list_item">
                                 

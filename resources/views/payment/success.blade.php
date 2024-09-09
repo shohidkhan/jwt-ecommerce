@@ -8,5 +8,6 @@
 </head>
 <body>
     <h1>Your Payment is Success</h1>
+    <a href="{{ url('/') }}" class="btn btn-primary">Back to Home</a>
 </body>
 </html>

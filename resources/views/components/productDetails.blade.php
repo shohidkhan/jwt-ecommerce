@@ -98,6 +98,7 @@
         document.getElementById('p_price').innerText=`$ ${details['product']['price']}`;
         document.getElementById('p_des').innerText=details['product']['short_des'];
         document.getElementById('p_des').innerText=details['des'];
+        document.getElementById('p_details').innerHTML=details['des'];
 
         // console.log(details.des)
 
@@ -156,7 +157,7 @@
                 if(res.status==200){
                     await cartDropDown();
                     await countCart();
-                    console.log(res.status)
+                    // console.log(res.status)
                     alert("Product Added To Cart");
                 }
             }
@@ -184,5 +185,61 @@
                 window.location.href="/userLoginPage"
             }
         }
+    }
+    async function productReview(){
+        let res = await axios.get("/listReviewByProduct/"+id);
+        let Details=await res.data['data'];
+        // console.log(Details)
+
+        $("#reviewList").empty();
+
+        Details.forEach((item,i)=>{
+            let each= `<li class="list-group-item">
+                <h6>${item['customer']['cus_name']}</h6>
+                <p class="m-0 p-0">${item['description']}</p>
+                <div class="rating_wrap">
+                    <div class="rating">
+                        <div class="product_rate" style="width:${parseFloat(item['rating'])}%"></div>
+                    </div>
+                </div>
+            </li>`;
+           $("#reviewList").append(each);
+        })
+    }
+
+    async function AddReview(){
+        try{
+
+            let reviewText=document.getElementById('reviewTextID').value;
+            let reviewScore=document.getElementById('reviewScore').value;
+            if(reviewText.length==0){
+                alert("Please Enter Review");
+
+            }else if(reviewScore==0){
+                alert("Please Enter Rating Score");            
+    
+            }else{
+                $(".preloader").delay(90).fadeOut(100).removeClass('loaded');
+                let res=await axios.post('/createProductReview',{
+                    "product_id":id,
+                    "description":reviewText,
+                    "rating":reviewScore
+                });
+                
+                $(".preloader").delay(90).fadeOut(100).addClass('loaded');
+                if(res.status===200){
+                    document.getElementById('reviewTextID').value="";
+                    document.getElementById('reviewScore').value="";
+                    await productReview();
+                    alert("Review Added");
+                }
+            }
+        }catch(er){
+            if(er.response.status===401){
+                localStorage.setItem('last_location',window.location.href)
+                window.location.href="/userLoginPage"
+            }
+        }
+
     }
 </script>

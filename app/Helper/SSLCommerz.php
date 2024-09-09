@@ -11,15 +11,15 @@ class SSLCommerz {
         try {
             $ssl = SslcommerzAccount::first();
             $response = Http::asForm()->post($ssl->init_url, [
-                "store_id" => "mycom66cec864be322",
-                "store_passwd" => "mycom66cec864be322@ssl",
+                "store_id" => $ssl->store_id,
+                "store_passwd" => $ssl->store_passwd,
                 "total_amount" => $payable,
                 "currency" => "BDT",
                 "tran_id" => $tran_id,
                 "success_url" => "$ssl->success_url?tran_id=$tran_id",
                 "fail_url" => "$ssl->fail_url?tran_id=$tran_id",
                 "cancel_url" => "$ssl->cancel_url?tran_id=$tran_id",
-                "ipn_url" => $ssl->ipn_url,
+                "ipn_url" => "$ssl->ipn_url?tran_id=$tran_id",
                 "cus_name" => $profile->cus_name,
                 "cus_email" => $userEmail,
                 "cus_add1" => $profile->cus_add,

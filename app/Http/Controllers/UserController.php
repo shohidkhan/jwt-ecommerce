@@ -58,7 +58,7 @@ class UserController extends Controller {
 
     public function logout() {
         try {
-            return redirect("/userLoginPage")->cookie('token', '', -1);
+            return redirect("/")->cookie('token', '', -1);
         } catch (Exception $e) {
             return ResponseHelper::Out('error', $e->getMessage(), 400);
         }

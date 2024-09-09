@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 class ProfileController extends Controller {
     //
 
+    function profilePage() {
+        return view('pages.profile-page');
+    }
+
     function createProfile(Request $request) {
         try {
 

@@ -32,6 +32,7 @@ Route::get('/policy', [PolicyController::class, 'policy'])->name('policy');
 Route::get('/product-details', [ProductController::class, 'productDetailsPage'])->name('productDetailsPage');
 Route::get("/cart-page", [CartController::class, 'cartPage'])->name('cartPage');
 Route::get("/wishlist-page", [WishlistController::class, 'wishlistPage'])->name('wishlistPage');
+Route::get("/profilePage", [ProfileController::class, 'profilePage'])->name('profilePage');
 
 Route::get("/uniqueBsedOnRemark", [ProductController::class, 'uniqueBsedOnRemark']);
 Route::get("/categories", [CategoryController::class, 'index'])->name('categories');
